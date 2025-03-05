@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes scaleOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.container {
+  @apply px-[29px] md:px-[37px];
+}
+
+.stat_card {
+  box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.25);
+}
+
+.tab_item {
+  @apply flex h-10 items-center justify-center border-r border-r-border p-2 text-[10px] text-secondary_dark md:h-[63px] md:text-[17px];
+}
+
+.tab_item:last-child {
+  @apply rounded-tr-[15px] border-r-0;
+}
+
+.tab_item:first-child {
+  @apply rounded-tl-[15px];
+}
+
+.active {
+  @apply bg-primary font-bold text-white;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.finished_pool_items {
+  @apply flex w-full items-center justify-between border-b border-b-border px-3 py-[10px] md:px-6 md:py-[14px];
+}
+
+.finished_pool_items:last-child {
+  @apply border-b-0;
+}
+
+.info_item {
+  @apply flex items-center justify-between border-b border-b-border px-[10px] py-[6px] md:px-5 md:py-4;
+}
+
+.info_item:last-child {
+  @apply border-b-0;
+}
+
+.scale-in {
+  display: flex;
+  animation: scaleIn 0.35s ease forwards;
+}
