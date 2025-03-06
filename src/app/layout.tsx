@@ -15,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`antialiased`}>
-        <div className="w-full text-white">
+        <div className="h-screen w-screen text-white">
           <main className="flex grow flex-col pb-[81px]">{children}</main>
           <Footer />
           <div id="portal-root"></div>

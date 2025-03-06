@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 3001",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -11,9 +11,11 @@
   "dependencies": {
     "@tanstack/react-query": "^5.66.0",
     "@wagmi/core": "^2.16.4",
+    "axios": "^1.8.1",
     "clsx": "^2.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
     "ethers": "^6.13.5",
-    "framer-motion": "^12.4.7",
     "next": "15.1.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

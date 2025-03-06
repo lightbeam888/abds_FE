@@ -14,23 +14,22 @@ const Claim = () => {
 
   const [currentReward, setCurrentReward] = useState(0);
 
-  let stakeList = [];
   const getStakingList = () => {
     const data = useContractRead({
-      address: "0xc03bdbf236b08e2d5951c549f06a2115bd50a1b8",
+      address: "0xD0938baa7E1c0a7625AA2d36CFEdBBbDFb364aC0",
       abi: stakingABI,
       functionName: "getUserStakes",
       args: [address],
     });
     return data.data;
   };
-  stakeList = getStakingList();
-
+  const stakeList = getStakingList();
+  console.log("-----", stakeList);
   const handleClaim = async () => {
     // staking
     const result = await writeContract(config, {
       abi: stakingABI,
-      address: "0x064910a7f67De2449411F2aA6B093B058E747d1E",
+      address: "0xD0938baa7E1c0a7625AA2d36CFEdBBbDFb364aC0",
       functionName: "Claim",
       args: [activeBoost],
     });
@@ -44,7 +43,7 @@ const Claim = () => {
   const pendingReward = async () => {
     /* const data =  */ await readContract(config, {
       abi: stakingABI,
-      address: "0x064910a7f67De2449411F2aA6B093B058E747d1E",
+      address: "0xD0938baa7E1c0a7625AA2d36CFEdBBbDFb364aC0",
       functionName: "currentReward",
       // args: [],
     })
@@ -75,7 +74,7 @@ const Claim = () => {
       <div className="mt-[14px] w-full px-2 md:mt-8 md:px-6">
         <div className="w-full">
           {/* Table Headings */}
-          <div className="flex items-center space-x-4 rounded-t-lg bg-[#043124] p-3 font-semibold text-white">
+          <div className="mb-1 flex items-center space-x-4 rounded-t-lg bg-[#08D1A4] p-3 font-semibold text-white">
             <p className="w-1/3">Amount</p>
             <p className="w-1/3">Start Time</p>
             <p className="w-1/3">Duration</p>
@@ -93,7 +92,7 @@ const Claim = () => {
                 }}
                 className={`flex cursor-pointer items-center space-x-4 p-3 transition-all duration-300 ${
                   index === currentIndex
-                    ? "bg-[#08D1A4] text-white shadow-lg"
+                    ? "bg-[#BBBBBB] text-white shadow-lg"
                     : "border border-[#08D1A4] bg-white text-gray-800 hover:bg-[#08D1A4]/10"
                 }`}
               >

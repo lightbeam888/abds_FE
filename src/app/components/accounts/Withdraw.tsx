@@ -2,20 +2,37 @@
 import React, { useState } from "react";
 
 import { useAccount, useContractRead } from "wagmi";
-import { writeContract } from "@wagmi/core";
+import { writeContract, readContract } from "@wagmi/core";
 import { config } from "../../utils/config";
 import { stakingABI, ABDSABI } from "../../utils/abi";
+import axios from "axios";
 
 const Withdraw = () => {
   const [value, setValue] = React.useState("0.00");
   const [value2, setValue2] = React.useState("0.00");
   const { isConnected, address } = useAccount();
   const [currentIndex, setcurrentIndex] = useState(0);
+  const [currentReward, setCurrentReward] = useState(0);
+
+  const withdrawTokens = async (_address) => {
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_BACKEND_URL}/withdraw`,
+        { _address },
+      );
+      console.log(response.data); // Success message
+    } catch (error) {
+      console.error(
+        "Error withdrawing tokens:",
+        error.response?.data || error.message,
+      );
+    }
+  };
 
   let stakeList = [];
   const getStakingList = () => {
     const data = useContractRead({
-      address: "0x064910a7f67De2449411F2aA6B093B058E747d1E",
+      address: "0xD0938baa7E1c0a7625AA2d36CFEdBBbDFb364aC0",
       abi: stakingABI,
       functionName: "getUserStakes",
       args: [address],
@@ -28,28 +45,34 @@ const Withdraw = () => {
     // staking
     const result = await writeContract(config, {
       abi: stakingABI,
-      address: "0x064910a7f67De2449411F2aA6B093B058E747d1E",
+      address: "0xD0938baa7E1c0a7625AA2d36CFEdBBbDFb364aC0",
       functionName: "withdraw",
       args: [],
     });
-    if (result) alert("withdraw successfully");
-    else {
+    if (result) {
+      // alert("withdraw successfully");
+      withdrawTokens(address);
+    } else {
       alert("withdraw failed");
       return result;
     }
   };
 
-  const pendingReward = () => {
-    const data = useContractRead({
-      address: "0x064910a7f67De2449411F2aA6B093B058E747d1E",
+  const pendingReward = async () => {
+    /* const data =  */ await readContract(config, {
       abi: stakingABI,
+      address: "0xD0938baa7E1c0a7625AA2d36CFEdBBbDFb364aC0",
       functionName: "currentReward",
-      args: [],
-    });
-    console.log(data);
+      // args: [],
+    })
+      .then((data) => {
+        setCurrentReward(data);
+      })
+      .catch();
   };
 
-  const currentReward = pendingReward();
+  // const currentReward = pendingReward();
+  pendingReward();
   // console.log(currentReward);
   return (
     <div className="w-full rounded-b-[15px] border-x border-b border-x-border border-b-border pt-[17px] md:pt-[38px]">
@@ -70,7 +93,7 @@ const Withdraw = () => {
       <div className="mt-[14px] w-full px-2 md:mt-8 md:px-6">
         <div className="w-full">
           {/* Table Headings */}
-          <div className="flex items-center space-x-4 rounded-t-lg bg-[#043124] p-3 font-semibold text-white">
+          <div className="mb-1 flex items-center space-x-4 rounded-t-lg bg-[#08D1A4] p-3 font-semibold text-white">
             <p className="w-1/3">Amount</p>
             <p className="w-1/3">Start Time</p>
             <p className="w-1/3">Duration</p>
@@ -88,7 +111,7 @@ const Withdraw = () => {
                 }}
                 className={`flex cursor-pointer items-center space-x-4 p-3 transition-all duration-300 ${
                   index === currentIndex
-                    ? "bg-[#08D1A4] text-white shadow-lg"
+                    ? "bg-[#BBBBBB] text-white shadow-lg"
                     : "border border-[#08D1A4] bg-white text-gray-800 hover:bg-[#08D1A4]/10"
                 }`}
               >
