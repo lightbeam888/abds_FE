@@ -1,6 +1,8 @@
+"use client";
 import React from "react";
 import Image from "next/image";
 import Logo from "@/app/assets/images/logo.png";
+
 const Navbar = () => {
   return (
     <div className="flex w-full items-center justify-between rounded-[20px] bg-dark_text px-4 py-5">

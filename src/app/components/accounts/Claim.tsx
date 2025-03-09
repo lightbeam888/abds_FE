@@ -23,7 +23,7 @@ const Claim = () => {
     });
     return data.data;
   };
-  const stakeList = getStakingList();
+  const stakeList: any = getStakingList();
   console.log("-----", stakeList);
   const handleClaim = async () => {
     // staking
@@ -47,7 +47,7 @@ const Claim = () => {
       functionName: "currentReward",
       // args: [],
     })
-      .then((data) => {
+      .then((data: any) => {
         setCurrentReward(data);
       })
       .catch();
@@ -75,15 +75,15 @@ const Claim = () => {
         <div className="w-full">
           {/* Table Headings */}
           <div className="mb-1 flex items-center space-x-4 rounded-t-lg bg-[#08D1A4] p-3 font-semibold text-white">
-            <p className="w-1/3">Amount</p>
-            <p className="w-1/3">Start Time</p>
-            <p className="w-1/3">Duration</p>
-            <p className="w-1/3">End Time</p>
+            <p className="w-1/3 text-[8px] md:text-lg">Amount</p>
+            <p className="w-1/3 text-[8px] md:text-lg">Start Time</p>
+            <p className="w-1/3 text-[8px] md:text-lg">Duration</p>
+            <p className="w-1/3 text-[8px] md:text-lg">End Time</p>
           </div>
 
           {/* Table Rows */}
           <ul className="flex flex-col space-y-2">
-            {stakeList?.map((staking, index) => (
+            {stakeList?.map((staking: any, index: any) => (
               <li
                 key={index}
                 onClick={() => {
@@ -116,53 +116,54 @@ const Claim = () => {
           </ul>
         </div>
       </div>
+      <div className="mt-3 px-2 md:px-6">
+        <div className="grid w-full grid-cols-4 gap-1 rounded-[15px] border border-border bg-[#F6F8F7] px-[6px] py-[5px] md:gap-[10px] md:px-[15px]">
+          {/* boost option */}
+          <button
+            className={`flex w-full flex-col items-center justify-center rounded-[10px] bg-white p-3 ${activeBoost === 0 ? "border border-primary" : ""}`}
+            onClick={() => setActiveBoost(0)}
+          >
+            <p
+              className={`text-[12px] font-semibold md:text-2xl ${activeBoost == 0 ? "text-primary" : "text-black"}`}
+            >
+              ABDS
+            </p>
+          </button>
 
-      <div className="grid w-full grid-cols-4 gap-1 rounded-[15px] border border-border bg-[#F6F8F7] px-[6px] py-[5px] md:gap-[10px] md:px-[15px] md:py-[7px]">
-        {/* boost option */}
-        <button
-          className={`flex w-full flex-col items-center justify-center rounded-[10px] bg-white p-3 ${activeBoost === 0 ? "border border-primary" : ""}`}
-          onClick={() => setActiveBoost(0)}
-        >
-          <p
-            className={`text-[12px] font-semibold md:text-2xl ${activeBoost == 0 ? "text-primary" : "text-black"}`}
+          {/* boost option */}
+          <button
+            className={`flex w-full flex-col items-center justify-center rounded-[10px] bg-white p-3 ${activeBoost === 1 ? "border border-primary" : ""}`}
+            onClick={() => setActiveBoost(1)}
           >
-            ABDS
-          </p>
-        </button>
-
-        {/* boost option */}
-        <button
-          className={`flex w-full flex-col items-center justify-center rounded-[10px] bg-white p-3 ${activeBoost === 1 ? "border border-primary" : ""}`}
-          onClick={() => setActiveBoost(1)}
-        >
-          <p
-            className={`text-[12px] font-semibold md:text-2xl ${activeBoost == 1 ? "text-primary" : "text-black"}`}
+            <p
+              className={`text-[12px] font-semibold md:text-2xl ${activeBoost == 1 ? "text-primary" : "text-black"}`}
+            >
+              USDT
+            </p>
+          </button>
+          {/* boost option */}
+          <button
+            className={`flex w-full flex-col items-center justify-center rounded-[10px] bg-white p-3 ${activeBoost === 2 ? "border border-primary" : ""}`}
+            onClick={() => setActiveBoost(2)}
           >
-            USDT
-          </p>
-        </button>
-        {/* boost option */}
-        <button
-          className={`flex w-full flex-col items-center justify-center rounded-[10px] bg-white p-3 ${activeBoost === 2 ? "border border-primary" : ""}`}
-          onClick={() => setActiveBoost(2)}
-        >
-          <p
-            className={`text-[12px] font-semibold md:text-2xl ${activeBoost == 2 ? "text-primary" : "text-black"}`}
+            <p
+              className={`text-[12px] font-semibold md:text-2xl ${activeBoost == 2 ? "text-primary" : "text-black"}`}
+            >
+              USDC
+            </p>
+          </button>
+          {/* boost option */}
+          <button
+            className={`flex w-full flex-col items-center justify-center rounded-[10px] bg-white p-3 ${activeBoost === 3 ? "border border-primary" : ""}`}
+            onClick={() => setActiveBoost(3)}
           >
-            USDC
-          </p>
-        </button>
-        {/* boost option */}
-        <button
-          className={`flex w-full flex-col items-center justify-center rounded-[10px] bg-white p-3 ${activeBoost === 3 ? "border border-primary" : ""}`}
-          onClick={() => setActiveBoost(3)}
-        >
-          <p
-            className={`text-[12px] font-semibold md:text-2xl ${activeBoost == 3 ? "text-primary" : "text-black"}`}
-          >
-            ETH
-          </p>
-        </button>
+            <p
+              className={`text-[12px] font-semibold md:text-2xl ${activeBoost == 3 ? "text-primary" : "text-black"}`}
+            >
+              ETH
+            </p>
+          </button>
+        </div>
       </div>
 
       <div className="mt-3 px-2 md:mt-8 md:px-6">

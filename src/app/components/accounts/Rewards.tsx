@@ -15,7 +15,7 @@ const Rewards = () => {
         <p className="text-[8px] font-bold sm:text-[10px] md:text-[17px]">
           FINISHED POOLS
         </p>
-        <button className="flex items-center justify-center space-x-1 text-[8px] font-bold md:space-x-2 md:text-[10px] md:text-[17px]">
+        <button className="flex items-center justify-center space-x-1 text-[8px] font-bold md:space-x-2 md:text-[17px]">
           <p>(4)</p>
           <Image
             src={DownArrow}

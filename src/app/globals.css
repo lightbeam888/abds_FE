@@ -84,11 +84,11 @@ input[type="number"] {
 
 /* Base styles for the select dropdown */
 #time-select {
-  border: 2px solid #08D1A4; /* Green border */
+  border: 2px solid #08d1a4; /* Green border */
   background-color: transparent; /* Transparent background */
   padding: 8px; /* Padding */
   font-weight: bold; /* Bold text */
-  color: #08D1A4; /* Text color */
+  color: #08d1a4; /* Text color */
   outline: none; /* Remove the focus ring */
   appearance: none; /* Remove default browser styling */
 }
@@ -96,10 +96,23 @@ input[type="number"] {
 /* Style for options inside the dropdown */
 #time-select option {
   background-color: #2d2d2d; /* Dark background for options */
-  color: #08D1A4; /* Text color */
+  color: #08d1a4; /* Text color */
 }
 
 /* Hover effect for options in the dropdown */
 #time-select option:hover {
-  background-color: rgba(255, 111, 0, 0.2); /* Change hover background to orange */
+  background-color: rgba(
+    255,
+    111,
+    0,
+    0.2
+  ); /* Change hover background to orange */
+}
+
+* {
+  user-select: none;
+}
+
+body {
+  /* background-color: gray; */
 }

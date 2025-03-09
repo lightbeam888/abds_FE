@@ -1,129 +1,99 @@
 "use client";
+
+import { motion } from "framer-motion";
 import Card from "@/app/components/statistics/Card";
 import Icon1 from "@/app/assets/icons/icon_card1.png";
 import Icon2 from "@/app/assets/icons/icon_card2.png";
 import Icon3 from "@/app/assets/icons/icon_card3.png";
 import Icon4 from "@/app/assets/icons/icon_card4.png";
 import Icon5 from "@/app/assets/icons/icon_card5.png";
-// import dotenv from "dotenv";
-import axios from "axios";
-import { useEffect, useState } from "react";
 
-// dotenv.config();
+const cardData = [
+  {
+    icon: Icon1,
+    percentage: 16.5,
+    usd: "12k",
+    value: "0.00%",
+    valueType: "APR",
+  },
+  {
+    icon: Icon2,
+    percentage: 16.5,
+    usd: "12k",
+    value: "$ 6K",
+    valueType: "TVL",
+  },
+  {
+    icon: Icon3,
+    percentage: 16.5,
+    usd: "12k",
+    value: "5",
+    valueType: "STAKERS",
+  },
+  {
+    icon: Icon4,
+    percentage: 16.5,
+    usd: "12k",
+    value: "34k",
+    valueSmall: "ABDS",
+    valueType: "STAKING",
+  },
+  {
+    icon: Icon5,
+    percentage: 16.5,
+    usd: "12k",
+    value: "500",
+    valueType: "LIMIT",
+  },
+];
 
-const Statistics = (indexState) => {
-  const [TVL, setTVL] = useState(0);
-  const [totalStaker, setTotalStaker] = useState(0);
-  const [totalStaking, setTotalStaking] = useState(0);
-  console.log(indexState);
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.2 },
+  },
+};
 
-  const getTotalStakingUsers = async (startDate) => {
-    try {
-      const response = await axios.get(
-        `http://localhost:5001/total-staking-users?startDate=${startDate}`,
-      );
-      return response.data.total_users;
-    } catch (error) {
-      return 0;
-    }
-  };
+const cardVariants = {
+  hidden: { opacity: 0, y: -30, scale: 0.2 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.5, ease: "easeOut" },
+  },
+};
 
-  const getTotalStakeValue = async (startDate) => {
-    try {
-      const response = await axios.get(
-        "http://localhost:5001/total-stake-value",
-        {
-          params: { startDate: startDate }, // Pass startDate as a query parameter
-        },
-      );
+// const hoverVariants = {
+//   hover: {
+//     scale: 1.05,
+//     transition: { duration: 0.3, ease: "easeInOut" },
+//   },
+// };
 
-      console.log(response.data);
-      return response.data.total_value;
-      // console.log(response.data); // Total stake value
-    } catch (error) {
-      console.log("returning zero");
-      return 0;
-    }
-  };
-
-  useEffect(() => {
-    async function fetchData() {
-      setTVL(
-        await getTotalStakeValue(
-          indexState == 0
-            ? new Date(new Date().setDate(new Date().getDate() - 7))
-                .toISOString()
-                .split("T")[0]
-            : indexState == 1
-              ? new Date(new Date().setMonth(new Date().getMonth() - 1))
-                  .toISOString()
-                  .split("T")[0]
-              : new Date(new Date().setFullYear(new Date().getFullYear() - 1))
-                  .toISOString()
-                  .split("T")[0],
-        ),
-      );
-      setTotalStaker(
-        await getTotalStakingUsers(
-          indexState == 0
-            ? new Date(new Date().setDate(new Date().getDate() - 7))
-                .toISOString()
-                .split("T")[0]
-            : indexState == 1
-              ? new Date(new Date().setMonth(new Date().getMonth() - 1))
-                  .toISOString()
-                  .split("T")[0]
-              : new Date(new Date().setFullYear(new Date().getFullYear() - 1))
-                  .toISOString()
-                  .split("T")[0],
-        ),
-      );
-    }
-    fetchData();
-    // setTotalStaker()
-  }, [indexState]);
-
+const Statistics = () => {
   return (
-    <div className="w-full px-[29px] text-dark_text md:px-[37px]">
-      <div className="cards_container -mt-[72px] grid grid-cols-1 gap-[18px] md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-        <Card
-          icon={Icon1}
-          percentage={16.5}
-          usd="21%"
-          value="0.00%"
-          valueType="APR"
-        />
-        <Card
-          icon={Icon2}
-          percentage={16.5}
-          usd="12k"
-          value={"$ " + new Number(TVL)}
-          valueType="TVL"
-        />
-        <Card
-          icon={Icon3}
-          percentage={16.5}
-          usd="12k"
-          value={totalStaker + "k"}
-          valueType="STAKERS"
-        />
-        <Card
-          icon={Icon4}
-          percentage={16.5}
-          usd="12k"
-          value={"" + new Number(TVL) + ""}
-          valueSmall="ABDS"
-          valueType="STAKING"
-        />
-        <Card
-          icon={Icon5}
-          percentage={16.5}
-          usd="12k"
-          value="500"
-          valueType="LIMIT"
-        />
-      </div>
-    </div>
+    <motion.div
+      className="w-full px-[29px] text-dark_text md:px-[37px]"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+    >
+      <motion.div className="cards_container -mt-[72px] grid grid-cols-1 gap-[18px] md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+        {cardData.map((card, index) => (
+          <motion.div
+            key={index}
+            variants={cardVariants}
+            initial="hidden"
+            animate="visible"
+            // whileHover={hoverVariants.hover}
+          >
+            <Card {...card} />
+          </motion.div>
+        ))}
+      </motion.div>
+    </motion.div>
   );
 };
 
