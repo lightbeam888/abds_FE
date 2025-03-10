@@ -80,7 +80,7 @@ const Statistics = () => {
       initial="hidden"
       animate="visible"
     >
-      <motion.div className="cards_container -mt-[72px] grid grid-cols-1 gap-[18px] md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+      <motion.div className="cards_container -mt-[52px] grid grid-cols-1 gap-[18px] md:-mt-[74px] md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
         {cardData.map((card, index) => (
           <motion.div
             key={index}

@@ -21,24 +21,36 @@ const Card: React.FC<CardProps> = ({
   valueSmall,
 }) => {
   return (
-    <div className="stat_card w-full min-w-[208px] md:min-w-[254px] rounded-xl bg-white px-[15px] py-3">
-      <div className="flex w-full items-center justify-between">
-        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#D5FAEC] p-1">
-          <Image src={icon} alt="icon" />
+    <div className="flex w-full items-center justify-center">
+      <div className="stat_card w-full min-w-[208px] max-w-[230px] rounded-xl bg-white px-[10px] py-2 md:min-w-[254px] md:max-w-full md:px-4 md:py-3">
+        <div className="flex w-full items-center justify-between">
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#D5FAEC]">
+            <Image src={icon} alt="icon" />
+          </div>
+          <div className="flex items-center justify-center space-x-1">
+            <p className="text-[10px] font-semibold text-primary md:text-sm">
+              {percentage}%{" "}
+            </p>
+            <div className="h-[5px] w-[5px] bg-dark_text"></div>
+            <p className="text-[10px] font-semibold text-dark_text md:text-sm">
+              ${usd} today
+            </p>
+          </div>
         </div>
-        <div className="flex items-center justify-center space-x-1">
-          <p className="text-[10px] md:text-sm font-semibold text-primary">{percentage}% </p>
-          <div className="h-[5px] w-[5px] bg-dark_text"></div>
-          <p className="text-[10px] md:text-sm font-semibold text-dark_text">${usd} today</p>
+        <div className="mt-1 flex items-end justify-center space-x-1 md:mt-5 md:justify-start">
+          <p className="text-[26px] font-semibold leading-[26px] text-primary">
+            {value}
+          </p>
+          {valueSmall && (
+            <p className="align-bottom text-[20px] font-semibold leading-[20px] text-primary">
+              {valueSmall}
+            </p>
+          )}
         </div>
+        <p className="mt-[3px] text-center text-[10px] font-semibold text-black md:text-start md:text-sm">
+          Total {valueType}
+        </p>
       </div>
-      <div className="mt-5 flex items-end justify-center md:justify-start space-x-1">
-        <p className="text-4xl font-semibold text-primary">{value}</p>
-        {valueSmall && (
-          <p className="text-[20px] font-semibold text-primary">{valueSmall}</p>
-        )}
-      </div>
-      <p className="mt-1 text-[10px] text-center md:text-start md:text-sm font-semibold text-black">Total {valueType}</p>
     </div>
   );
 };

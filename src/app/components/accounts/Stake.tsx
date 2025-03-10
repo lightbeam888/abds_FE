@@ -1,21 +1,19 @@
 "use client";
 import React, { useState, ChangeEvent, useEffect } from "react";
-// import Image from "next/image";
-// import Excla from "@/app/assets/icons/excla.png";
-// import Lock from "@/app/assets/icons/lock.png";
 import axios from "axios";
 import { useAccount } from "wagmi";
 import { writeContract } from "@wagmi/core";
 import { config } from "../../utils/config";
 import { stakingABI, ABDSABI } from "../../utils/abi";
 import { motion } from "framer-motion";
+import { etherUnits, parseEther } from "viem";
 const Stake: React.FC = () => {
   const [value, setValue] = useState<string>("0.00");
   const [activeBoost, setActiveBoost] = useState<number>(0);
   const [isChecked, setIsChecked] = useState<boolean>(false);
   const { isConnected, address } = useAccount();
   const [isClient, setIsClient] = useState(false);
-
+  const [tx, setTx] = useState<string>("");
   useEffect(() => {
     setIsClient(true);
   }, []);
@@ -53,23 +51,23 @@ const Stake: React.FC = () => {
     try {
       console.log(value);
       // Approve
-      await writeContract(config, {
-        address: "0xD0938baa7E1c0a7625AA2d36CFEdBBbDFb364aC0",
+      const tx = await writeContract(config, {
+        address: "0xb56aaac80c931161548a49181c9e000a19489c44",
         abi: ABDSABI,
         functionName: "approve",
-        args: [address, value],
+        args: ["0xD0938baa7E1c0a7625AA2d36CFEdBBbDFb364aC0", parseEther(value)],
       });
-
+      console.log(tx);
       // Stake
       const result = await writeContract(config, {
         abi: stakingABI,
         address: "0xD0938baa7E1c0a7625AA2d36CFEdBBbDFb364aC0",
         functionName: "stakeTokens",
-        args: [value, stakeTime, isChecked],
+        args: [parseEther(value), stakeTime, isChecked],
       });
-
+      console.log(result);
       if (result) {
-        stakeTokens(address, value, stakeTime);
+        // stakeTokens(address, value, stakeTime);
       } else {
         alert("staking failed");
       }
@@ -110,7 +108,7 @@ const Stake: React.FC = () => {
           </div>
           {/* boost options */}
           <BoostOptions />
-          <div className="flex w-full items-center justify-between">
+          <div className="mt-1 flex w-full items-center justify-between px-1">
             {/* Checkbox with label on the left */}
             <label className="flex items-center space-x-2 text-[8px] font-light text-secondary_light md:text-[13px]">
               <input
@@ -123,7 +121,7 @@ const Stake: React.FC = () => {
             </label>
 
             {/* Text on the right */}
-            <span className="mt-1 text-[8px] font-light text-secondary_light md:text-[13px]">
+            <span className="text-[8px] font-light text-secondary_light md:text-[13px]">
               Lock for longer periods to increase share weight & rewards
             </span>
           </div>

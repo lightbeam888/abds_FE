@@ -17,7 +17,10 @@ const heroVariants = {
 
 const Hero = () => {
   return (
-    <div className="w-full bg-[#1C1D1E] px-[29px] pb-[128px] pt-[27px] md:px-[37px]" style={{ backgroundImage: "url(/BG.JPg)", objectFit: "cover" }}>
+    <div
+      className="w-full bg-[#1C1D1E] px-[29px] pb-[128px] pt-[27px] md:px-[37px]"
+      style={{ backgroundImage: "url(/bg.jpg)", backgroundSize: "cover" }}
+    >
       <Navbar />
       <div className="mt-[55px] flex w-full flex-col items-end justify-between md:mt-[109px] md:flex-row">
         {/* Left section */}
@@ -78,9 +81,9 @@ const Hero = () => {
               <Image src={Refresh} alt="refresh" />
             </motion.button>
           </div> */}
-          {/* <div className="hidden md:flex">
+          <div className="hidden md:flex">
             <ShowingButtons />
-          </div> */}
+          </div>
         </motion.div>
       </div>
     </div>
