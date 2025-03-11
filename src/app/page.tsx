@@ -11,10 +11,6 @@ import { darkTheme, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 
 const queryClient = new QueryClient();
 export default function Home() {
-  const [statisticsState, setStatisticsState] = useState<Number>(0);
-  const updateStatistics = (index: Number) => {
-    setStatisticsState(index);
-  };
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>

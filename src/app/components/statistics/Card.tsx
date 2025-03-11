@@ -37,7 +37,7 @@ const Card: React.FC<CardProps> = ({
             </p>
           </div>
         </div>
-        <div className="mt-1 flex items-end justify-center space-x-1 md:mt-5 md:justify-start">
+        <div className="mt-1 flex items-end justify-center space-x-1 md:mt-3 md:justify-start">
           <p className="text-[26px] font-semibold leading-[26px] text-primary">
             {value}
           </p>

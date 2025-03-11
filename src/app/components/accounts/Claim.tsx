@@ -40,21 +40,21 @@ const Claim = () => {
     }
   };
 
-  const pendingReward = async () => {
-    /* const data =  */ await readContract(config, {
-      abi: stakingABI,
-      address: "0xD0938baa7E1c0a7625AA2d36CFEdBBbDFb364aC0",
-      functionName: "currentReward",
-      // args: [],
-    })
-      .then((data: any) => {
-        setCurrentReward(data);
-      })
-      .catch();
-  };
+  // const pendingReward = async () => {
+  //   /* const data =  */ await readContract(config, {
+  //     abi: stakingABI,
+  //     address: "0xD0938baa7E1c0a7625AA2d36CFEdBBbDFb364aC0",
+  //     functionName: "currentReward",
+  //     // args: [],
+  //   })
+  //     .then((data: any) => {
+  //       setCurrentReward(data);
+  //     })
+  //     .catch();
+  // };
 
   // const currentReward = pendingReward();
-  pendingReward();
+  // pendingReward();
   return (
     <div className="w-full rounded-b-[15px] border-x border-b border-x-border border-b-border pt-[17px] md:pt-[38px]">
       {/* <div className="px-2 md:px-6">

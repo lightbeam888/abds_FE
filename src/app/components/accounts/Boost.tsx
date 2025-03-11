@@ -62,7 +62,7 @@ const Boost: React.FC = () => {
     <div className="w-full rounded-b-[15px] border-x border-b border-x-border border-b-border pt-[17px] md:pt-[38px]">
       <div className="mt-3 px-2 md:px-6">
         <div className="mt-[17px] w-full md:mt-6">
-          <p className="text-[6px] text-secondary_light sm:text-[10px] md:text-sm">
+          <p className="text-[10px] text-secondary_light sm:text-[10px] md:text-sm">
             Time Boost Option
           </p>
           <div className="grid w-full grid-cols-3 gap-1 rounded-[15px] border border-border bg-[#F6F8F7] px-[6px] py-[5px] md:gap-[10px] md:px-[15px] md:py-[7px]">
@@ -81,7 +81,7 @@ const Boost: React.FC = () => {
                 >
                   {option.months} months
                 </p>
-                <p className="text-[6px] text-secondary_light sm:text-[10px] md:text-sm">
+                <p className="text-[10px] text-secondary_light sm:text-[10px] md:text-sm">
                   {option.bonus}
                 </p>
               </button>
