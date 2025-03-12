@@ -19,7 +19,7 @@ const Boost: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
   const { data: stakeList } = useContractRead({
-    address: "0x064910a7f67De2449411F2aA6B093B058E747d1E",
+    address: "0x12CBe0b5a52f2DE868d4B4b7012B3C6Af3543764",
     abi: stakingABI,
     functionName: "getUserStakes",
     args: [address],
@@ -36,7 +36,7 @@ const Boost: React.FC = () => {
     try {
       const result = await writeContract(config, {
         abi: stakingABI,
-        address: "0x064910a7f67De2449411F2aA6B093B058E747d1E",
+        address: "0x12CBe0b5a52f2DE868d4B4b7012B3C6Af3543764",
         functionName: "boost",
         args: [currentIndex, boostTime],
       });
@@ -104,7 +104,9 @@ const Boost: React.FC = () => {
                     : "border border-[#08D1A4] bg-white text-gray-800 hover:bg-[#08D1A4]/10"
                 }`}
               >
-                <p className="w-1/3 font-medium">{staking.amount}</p>
+                <p className="w-1/3 font-medium">
+                  {staking.amount / BigInt(10 ** 18)}
+                </p>
                 <p className="w-1/3 font-medium">
                   {new Date(
                     Number(staking.startTime) * 1000,

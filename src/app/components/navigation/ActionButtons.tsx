@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useConnect, useAccount, useDisconnect } from "wagmi";
 import { metaMask } from "wagmi/connectors";
 import { injected } from "wagmi/connectors";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 const ActionButtons = () => {
   const [walletName, setwalletName] = useState("Connect Wallet");
@@ -20,25 +21,23 @@ const ActionButtons = () => {
   }
   return (
     <div className="items-center justify-center space-x-5 md:flex">
-      {isConnected ? (
-        <button
-          onClick={() => disconnect()}
-          className="rounded-[12px] border border-primary bg-dark_text px-6 py-4 text-[13px] font-semibold text-primary md:text-sm"
-        >
-          connected
-        </button>
-      ) : (
-        <button
-          onClick={() =>
-            connect({
-              connector: injected(),
-            })
-          }
-          className="rounded-[9px] border border-primary px-2 py-3 text-[11px] font-bold text-primary md:px-4 md:py-[15px]"
-        >
-          BUY ABDS TOKEN
-        </button>
-      )}
+      <ConnectButton.Custom>
+        {({ account, chain, openConnectModal, openAccountModal }) => {
+          return (
+            <button
+              onClick={account ? openAccountModal : openConnectModal}
+              style={{
+                padding: "10px",
+                borderRadius: "8px",
+                background: "black",
+                color: "white",
+              }}
+            >
+              {account ? account.address : "Connect"}
+            </button>
+          );
+        }}
+      </ConnectButton.Custom>
       <select
         name="country"
         id="country-select"

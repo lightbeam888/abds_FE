@@ -47,10 +47,10 @@ const Stake: React.FC = () => {
   const approve = async (): Promise<void> => {
     try {
       const result = await writeContract(config, {
-        address: "0xb56aaac80c931161548a49181c9e000a19489c44",
+        address: "0xb56aaac80c931161548a49181c9e000a19489c44", //  //0x506F6E4847Dc177a62aC9250A9231376569EE728
         abi: ABDSABI,
         functionName: "approve",
-        args: ["0xD0938baa7E1c0a7625AA2d36CFEdBBbDFb364aC0", parseEther(value)],
+        args: ["0x12CBe0b5a52f2DE868d4B4b7012B3C6Af3543764", parseEther(value)],
       });
       setTx(result);
     } catch (error: any) {
@@ -73,7 +73,7 @@ const Stake: React.FC = () => {
       // Stake
       const result = await writeContract(config, {
         abi: stakingABI,
-        address: "0xD0938baa7E1c0a7625AA2d36CFEdBBbDFb364aC0",
+        address: "0x12CBe0b5a52f2DE868d4B4b7012B3C6Af3543764",
         functionName: "stakeTokens",
         args: [parseEther(value), stakeTime, isChecked],
       });

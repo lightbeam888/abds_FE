@@ -37,17 +37,19 @@ const Withdraw: React.FC = () => {
   };
 
   const { data: stakeList } = useReadContract({
-    address: "0xD0938baa7E1c0a7625AA2d36CFEdBBbDFb364aC0",
+    address: "0x12CBe0b5a52f2DE868d4B4b7012B3C6Af3543764",
     abi: stakingABI,
     functionName: "getUserStakes",
     args: [address],
   }) as { data: StakeData[] | undefined };
 
+  console.log("this is user stake", stakeList);
+
   const handleWithdraw = async (): Promise<void> => {
     try {
       const result = await writeContract(config, {
         abi: stakingABI,
-        address: "0xD0938baa7E1c0a7625AA2d36CFEdBBbDFb364aC0",
+        address: "0x12CBe0b5a52f2DE868d4B4b7012B3C6Af3543764",
         functionName: "withdraw",
         args: [],
       });
@@ -67,15 +69,17 @@ const Withdraw: React.FC = () => {
     try {
       const data: any = await readContract(config, {
         abi: stakingABI,
-        address: "0xD0938baa7E1c0a7625AA2d36CFEdBBbDFb364aC0",
+        address: "0x12CBe0b5a52f2DE868d4B4b7012B3C6Af3543764",
         functionName: "currentReward",
+        args: [address],
       });
+      console.log(data);
       setCurrentReward(data.toString());
     } catch (error: any) {
       console.error("Error fetching pending reward:", error);
     }
   };
-  console.log(stakeList?.length);
+  // console.log(stakeList?.length);
   useEffect(() => {
     if (address) {
       fetchPendingReward();
@@ -107,7 +111,9 @@ const Withdraw: React.FC = () => {
                     : "border border-[#08D1A4] bg-white text-gray-800 hover:bg-[#08D1A4]/10"
                 }`}
               >
-                <p className="w-1/3 font-medium">{staking.amount}</p>
+                <p className="w-1/3 font-medium">
+                  {staking.amount / BigInt(10 ** 18)}
+                </p>
                 <p className="w-1/3 font-medium">
                   {new Date(
                     Number(staking.startTime) * 1000,

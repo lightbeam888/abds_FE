@@ -16,7 +16,7 @@ const Claim = () => {
 
   const getStakingList = () => {
     const data = useContractRead({
-      address: "0xD0938baa7E1c0a7625AA2d36CFEdBBbDFb364aC0",
+      address: "0x12CBe0b5a52f2DE868d4B4b7012B3C6Af3543764",
       abi: stakingABI,
       functionName: "getUserStakes",
       args: [address],
@@ -29,7 +29,7 @@ const Claim = () => {
     // staking
     const result = await writeContract(config, {
       abi: stakingABI,
-      address: "0xD0938baa7E1c0a7625AA2d36CFEdBBbDFb364aC0",
+      address: "0x12CBe0b5a52f2DE868d4B4b7012B3C6Af3543764",
       functionName: "Claim",
       args: [activeBoost],
     });
@@ -43,7 +43,7 @@ const Claim = () => {
   // const pendingReward = async () => {
   //   /* const data =  */ await readContract(config, {
   //     abi: stakingABI,
-  //     address: "0xD0938baa7E1c0a7625AA2d36CFEdBBbDFb364aC0",
+  //     address: "0x12CBe0b5a52f2DE868d4B4b7012B3C6Af3543764",
   //     functionName: "currentReward",
   //     // args: [],
   //   })
@@ -96,7 +96,10 @@ const Claim = () => {
                     : "border border-[#08D1A4] bg-white text-gray-800 hover:bg-[#08D1A4]/10"
                 }`}
               >
-                <p className="w-1/3 font-medium"> {staking.amount} </p>
+                <p className="w-1/3 font-medium">
+                  {" "}
+                  {staking.amount / BigInt(10 ** 18)}{" "}
+                </p>
                 <p className="w-1/3 font-medium">
                   {new Date(
                     Number(staking.startTime) * 1000,
