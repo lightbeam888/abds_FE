@@ -3,7 +3,6 @@
 import React from "react";
 import Image from "next/image";
 import DownArrow from "@/app/assets/icons/down_arrow.png";
-import FinishedPoolItem from "@/app/components/accounts/FinishedPoolItem";
 
 const Rewards = () => {
   return (
@@ -25,12 +24,6 @@ const Rewards = () => {
         </button>
       </div>
       {/* body */}
-      <div className="w-full grow rounded-b-[15px] border-x border-b border-x-border border-b-border">
-        <FinishedPoolItem />
-        <FinishedPoolItem />
-        <FinishedPoolItem />
-        <FinishedPoolItem />
-      </div>
     </div>
   );
 };

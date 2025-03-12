@@ -1,14 +1,13 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useConnect, useAccount, useDisconnect } from "wagmi";
-import { metaMask } from "wagmi/connectors";
 import { injected } from "wagmi/connectors";
 
 const ActionButtons = () => {
-  const [walletName, setwalletName] = useState("Connect Wallet");
+  // const [walletName, setwalletName] = useState("Connect Wallet");
   const { connect } = useConnect();
   const { disconnect } = useDisconnect();
-  const { isConnected, address } = useAccount();
+  const { isConnected } = useAccount();
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {

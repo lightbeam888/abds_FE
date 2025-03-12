@@ -8,45 +8,6 @@ import Icon3 from "@/app/assets/icons/icon_card3.png";
 import Icon4 from "@/app/assets/icons/icon_card4.png";
 import Icon5 from "@/app/assets/icons/icon_card5.png";
 
-const cardData = [
-  {
-    icon: Icon1,
-    percentage: 16.5,
-    usd: "12k",
-    value: "0.00%",
-    valueType: "APR",
-  },
-  {
-    icon: Icon2,
-    percentage: 16.5,
-    usd: "12k",
-    value: "$ 6K",
-    valueType: "TVL",
-  },
-  {
-    icon: Icon3,
-    percentage: 16.5,
-    usd: "12k",
-    value: "5",
-    valueType: "STAKERS",
-  },
-  {
-    icon: Icon4,
-    percentage: 16.5,
-    usd: "12k",
-    value: "34k",
-    valueSmall: "ABDS",
-    valueType: "STAKING",
-  },
-  {
-    icon: Icon5,
-    percentage: 16.5,
-    usd: "12k",
-    value: "500",
-    valueType: "LIMIT",
-  },
-];
-
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -65,14 +26,45 @@ const cardVariants = {
   },
 };
 
-// const hoverVariants = {
-//   hover: {
-//     scale: 1.05,
-//     transition: { duration: 0.3, ease: "easeInOut" },
-//   },
-// };
-
 const Statistics = () => {
+  const cardData = [
+    {
+      icon: Icon1,
+      percentage: 16.5,
+      usd: "12k",
+      value: "0.00%",
+      valueType: "APR",
+    },
+    {
+      icon: Icon2,
+      percentage: 16.5,
+      usd: "12k",
+      value: "$ 6K",
+      valueType: "TVL",
+    },
+    {
+      icon: Icon3,
+      percentage: 16.5,
+      usd: "12k",
+      value: "5",
+      valueType: "STAKERS",
+    },
+    {
+      icon: Icon4,
+      percentage: 16.5,
+      usd: "12k",
+      value: "34k",
+      valueSmall: "ABDS",
+      valueType: "STAKING",
+    },
+    {
+      icon: Icon5,
+      percentage: 16.5,
+      usd: "12k",
+      value: "500",
+      valueType: "LIMIT",
+    },
+  ];
   return (
     <motion.div
       className="w-full px-[29px] text-dark_text md:px-[37px]"

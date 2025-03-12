@@ -6,22 +6,25 @@ import { writeContract } from "@wagmi/core";
 import { config } from "../../utils/config";
 import { stakingABI, ABDSABI } from "../../utils/abi";
 import { motion } from "framer-motion";
-import { etherUnits, parseEther } from "viem";
+import { parseEther } from "viem";
+
 const Stake: React.FC = () => {
   const [value, setValue] = useState<string>("0.00");
   const [activeBoost, setActiveBoost] = useState<number>(0);
   const [isChecked, setIsChecked] = useState<boolean>(false);
-  const { isConnected, address } = useAccount();
+  const { address } = useAccount();
   const [isClient, setIsClient] = useState(false);
   const [tx, setTx] = useState<string>("");
 
   useEffect(() => {
     setIsClient(true);
   }, []);
+
   const buttonVariants = {
     hover: { scale: 1.01, transition: { duration: 0.1, ease: "easeInOut" } },
     tap: { scale: 0.99, transition: { duration: 0.1 } },
   };
+
   const stakeTokens = async (
     address: string | undefined,
     amount: string,
@@ -29,7 +32,7 @@ const Stake: React.FC = () => {
   ): Promise<void> => {
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_BACKEND_URL}/stake`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/stake`,
         {
           address,
           amount,
@@ -37,27 +40,37 @@ const Stake: React.FC = () => {
         },
       );
       console.log(response.data);
-    } catch (error: any) {
-      console.error(
-        "Error staking tokens:",
-        error.response?.data || error.message,
-      );
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        console.error(
+          "Error staking tokens:",
+          error.response?.data || error.message,
+        );
+      } else {
+        console.error("Error staking tokens:", error);
+      }
     }
   };
+
   const approve = async (): Promise<void> => {
     try {
       const result = await writeContract(config, {
         address: "0xb56aaac80c931161548a49181c9e000a19489c44",
         abi: ABDSABI,
         functionName: "approve",
-        args: ["0xD0938baa7E1c0a7625AA2d36CFEdBBbDFb364aC0", parseEther(value)],
+        args: ["0x12CBe0b5a52f2DE868d4B4b7012B3C6Af3543764", parseEther(value)],
       });
       setTx(result);
-    } catch (error: any) {
-      console.error("Approval failed.", error);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error("Approval failed.", error.message);
+      } else {
+        console.error("Approval failed.", error);
+      }
       alert("Approval failed");
     }
   };
+
   const handleStake = async (): Promise<void> => {
     let stakeTime = (activeBoost + 2) * 3;
     if (stakeTime === 6) stakeTime = 182;
@@ -73,18 +86,22 @@ const Stake: React.FC = () => {
       // Stake
       const result = await writeContract(config, {
         abi: stakingABI,
-        address: "0xD0938baa7E1c0a7625AA2d36CFEdBBbDFb364aC0",
+        address: "0x12CBe0b5a52f2DE868d4B4b7012B3C6Af3543764",
         functionName: "stakeTokens",
         args: [parseEther(value), stakeTime, isChecked],
       });
       console.log(result);
       if (result) {
-        // stakeTokens(address, value, stakeTime);
+        stakeTokens(address, value, stakeTime);
       } else {
         alert("staking failed");
       }
-    } catch (error: any) {
-      console.error("Approval failed.", error);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error("Approval failed.", error.message);
+      } else {
+        console.error("Approval failed.", error);
+      }
       alert("Approval failed");
     }
   };
@@ -94,9 +111,6 @@ const Stake: React.FC = () => {
     console.log("Checkbox checked:", event.target.checked);
   };
 
-  const handleValueChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setValue(e.target.value);
-  };
   if (!isClient) {
     return null;
   }
@@ -123,7 +137,7 @@ const Stake: React.FC = () => {
             <p className="text-[10px] text-secondary_light sm:text-[10px] md:text-sm">
               Time Boost Option
             </p>
-            <div className="grid w-full grid-cols-5 gap-1 rounded-[15px] border border-border bg-[#F6F8F7] px-[6px] py-[5px] md:gap-[10px] md:px-[15px] md:py-[7px]">
+            <div className="grid w-full grid-cols-5 gap-1 rounded-[15px] border border-border bg-[#F6F8F7] px-2 py-1 md:gap-[10px] md:px-[14px] md:py-[7px]">
               {[6, 9, 12, 15, 18].map((month, index) => (
                 <motion.button
                   key={index}

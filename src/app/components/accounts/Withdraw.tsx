@@ -1,9 +1,9 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { useAccount, useContractRead, useReadContract } from "wagmi";
+import { useAccount, useReadContract } from "wagmi";
 import { writeContract, readContract } from "@wagmi/core";
 import { config } from "../../utils/config";
-import { stakingABI, ABDSABI } from "../../utils/abi";
+import { stakingABI } from "../../utils/abi";
 import axios from "axios";
 
 interface StakeData {
@@ -13,9 +13,7 @@ interface StakeData {
 }
 
 const Withdraw: React.FC = () => {
-  const [value] = useState<string>("0.00");
-  const [value2] = useState<string>("0.00"); // Kept as it was in original, though unused
-  const { isConnected, address } = useAccount();
+  const { address } = useAccount();
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [currentReward, setCurrentReward] = useState<string>("0");
 
@@ -28,16 +26,20 @@ const Withdraw: React.FC = () => {
         { _address },
       );
       console.log(response.data);
-    } catch (error: any) {
-      console.error(
-        "Error withdrawing tokens:",
-        error.response?.data || error.message,
-      );
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        console.error(
+          "Error withdrawing tokens:",
+          error.response?.data || error.message,
+        );
+      } else {
+        console.error("Error withdrawing tokens:", error);
+      }
     }
   };
 
   const { data: stakeList } = useReadContract({
-    address: "0xD0938baa7E1c0a7625AA2d36CFEdBBbDFb364aC0",
+    address: "0x12CBe0b5a52f2DE868d4B4b7012B3C6Af3543764",
     abi: stakingABI,
     functionName: "getUserStakes",
     args: [address],
@@ -47,7 +49,7 @@ const Withdraw: React.FC = () => {
     try {
       const result = await writeContract(config, {
         abi: stakingABI,
-        address: "0xD0938baa7E1c0a7625AA2d36CFEdBBbDFb364aC0",
+        address: "0x12CBe0b5a52f2DE868d4B4b7012B3C6Af3543764",
         functionName: "withdraw",
         args: [],
       });
@@ -57,64 +59,92 @@ const Withdraw: React.FC = () => {
       } else {
         alert("withdraw failed");
       }
-    } catch (error: any) {
-      console.error("Withdraw failed:", error);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error("Withdraw failed:", error.message);
+      } else {
+        console.error("Withdraw failed:", error);
+      }
       alert("withdraw failed");
     }
   };
 
-  const fetchPendingReward = async (): Promise<void> => {
+  const fetchCurrentReward = async (): Promise<void> => {
+    if (!address) return;
+
     try {
-      const data: any = await readContract(config, {
+      const data = (await readContract(config, {
         abi: stakingABI,
-        address: "0xD0938baa7E1c0a7625AA2d36CFEdBBbDFb364aC0",
+        address: "0x12CBe0b5a52f2DE868d4B4b7012B3C6Af3543764",
         functionName: "currentReward",
-      });
+        args: [address],
+      })) as string;
       setCurrentReward(data.toString());
-    } catch (error: any) {
-      console.error("Error fetching pending reward:", error);
+      console.log(data.toString());
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error("Error fetching pending reward:", error.message);
+      } else {
+        console.error("Error fetching pending reward:", error);
+      }
     }
   };
-  console.log(stakeList?.length);
+
   useEffect(() => {
     if (address) {
-      fetchPendingReward();
+      fetchCurrentReward();
     }
-  }, [address]);
+  }, [address, fetchCurrentReward]);
 
   return (
     <div className="w-full rounded-b-[15px] border-x border-b border-x-border border-b-border pt-[17px] md:pt-[38px]">
       <div className="mt-[14px] w-full px-2 md:mt-8 md:px-6">
         <div className="w-full">
-          <div className="mb-1 flex items-center space-x-2 rounded-t-lg bg-[#08D1A4] p-3 font-semibold text-white">
-            <p className="w-1/3 text-[10px] md:text-lg">Amount</p>
-            <p className="w-1/3 text-[10px] md:text-lg">Start Time</p>
-            <p className="w-1/3 text-[10px] md:text-lg">Duration</p>
-            <p className="w-1/3 text-[10px] md:text-lg">End Time</p>
+          {/* Table Headings */}
+          <div className="mb-1 rounded-t-lg bg-[#08D1A4] px-3 py-1.5 font-semibold text-white md:px-6 md:py-3">
+            <div className="flex">
+              <p className="flex-[0.8] text-left text-[0.7rem] md:text-lg">
+                Amount
+              </p>
+              <p className="flex-1 text-center text-[0.7rem] md:text-lg">
+                Start Time
+              </p>
+              <p className="flex-1 text-center text-[0.7rem] md:text-lg">
+                Duration
+              </p>
+              <p className="flex-[0.8] text-center text-[0.7rem] md:text-lg">
+                End Time
+              </p>
+            </div>
           </div>
 
+          {/* Table Rows */}
           <ul className="flex flex-col space-y-2">
-            {stakeList?.map((staking, index) => (
+            {stakeList?.map((staking: StakeData, index: number) => (
               <li
                 key={index}
                 onClick={() => {
                   setCurrentIndex(index);
                   console.log(index);
                 }}
-                className={`flex cursor-pointer items-center space-x-2 p-3 transition-all duration-300 ${
+                className={`flex cursor-pointer items-center justify-between border-b-2 px-3 py-1.5 transition-all duration-300 md:py-3 md:pl-10 md:pr-8 ${
                   index === currentIndex
-                    ? "bg-[#BBBBBB] text-white shadow-lg"
-                    : "border border-[#08D1A4] bg-white text-gray-800 hover:bg-[#08D1A4]/10"
+                    ? "bg-gray-400/85 font-extrabold text-white shadow-md"
+                    : "bg-white text-gray-800 hover:bg-[#08D1A4]/20"
                 }`}
               >
-                <p className="w-1/3 font-medium">{staking.amount}</p>
-                <p className="w-1/3 font-medium">
+                <p className="flex-[0.8] text-left text-[12px] font-medium md:text-base">
+                  {Number(staking.amount) / 1e18}
+                </p>
+                <p className="flex-1 text-center text-[12px] font-medium md:text-base">
                   {new Date(
                     Number(staking.startTime) * 1000,
                   ).toLocaleDateString()}
                 </p>
-                <p className="w-1/3 font-medium">{staking.duration}</p>
-                <p className="w-1/3 font-medium">
+                <p className="flex-1 text-center text-[12px] font-medium md:text-base">
+                  {staking.duration}
+                </p>
+                <p className="flex-[0.8] text-center text-[12px] font-medium md:text-base">
                   {new Date(
                     new Date(Number(staking.startTime) * 1000).setDate(
                       new Date(Number(staking.startTime) * 1000).getDate() +
@@ -136,7 +166,7 @@ const Withdraw: React.FC = () => {
           <input
             value={currentReward}
             disabled={true}
-            className="relative w-full rounded-[10px] border border-border bg-[#F6F8F7] p-2 text-[17px] font-semibold text-black focus:border-primary focus:outline-none md:py-[17px] md:pl-[14px] md:text-[27px]"
+            className="relative w-full rounded-[10px] border border-border bg-[#F6F8F7] px-4 py-2 text-[17px] font-semibold text-black focus:border-primary focus:outline-none md:py-3 md:pl-6 md:text-[27px]"
           />
         </div>
       </div>

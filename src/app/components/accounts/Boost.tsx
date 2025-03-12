@@ -1,10 +1,9 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import ProgressBar from "./ProgressBar";
+import React, { useState } from "react";
 import { useAccount, useContractRead } from "wagmi";
 import { writeContract } from "@wagmi/core";
 import { config } from "../../utils/config";
-import { stakingABI, ABDSABI } from "../../utils/abi";
+import { stakingABI } from "../../utils/abi";
 
 interface StakeData {
   amount: string;
@@ -14,8 +13,7 @@ interface StakeData {
 
 const Boost: React.FC = () => {
   const [activeBoost, setActiveBoost] = useState<number>(0);
-  const [value] = useState<string>("0.00"); // Kept but unused
-  const { isConnected, address } = useAccount();
+  const { address } = useAccount();
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
   const { data: stakeList } = useContractRead({
@@ -42,13 +40,17 @@ const Boost: React.FC = () => {
       });
 
       if (result) {
-        alert("staked successfully");
+        alert("Boosted successfully");
       } else {
-        alert("staking failed");
+        alert("Boosting failed");
       }
-    } catch (error: any) {
-      console.error("Boost failed:", error);
-      alert("staking failed");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error("Boost failed:", error.message);
+      } else {
+        console.error("Boost failed:", error);
+      }
+      alert("Boosting failed");
     }
   };
 
@@ -104,7 +106,9 @@ const Boost: React.FC = () => {
                     : "border border-[#08D1A4] bg-white text-gray-800 hover:bg-[#08D1A4]/10"
                 }`}
               >
-                <p className="w-1/3 font-medium">{staking.amount}</p>
+                <p className="w-1/3 font-medium">
+                  {Number(staking.amount) / 1e18}
+                </p>
                 <p className="w-1/3 font-medium">
                   {new Date(
                     Number(staking.startTime) * 1000,

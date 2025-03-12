@@ -1,10 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Image from "next/image";
 import Navbar from "@/app/components/navigation/Navbar";
-import Settings from "@/app/assets/icons/settings.png";
-import Refresh from "@/app/assets/icons/refresh.png";
 
 const heroVariants = {
   hidden: { opacity: 0, x: -30 },
