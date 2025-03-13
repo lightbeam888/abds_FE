@@ -33,8 +33,8 @@ const Boost: React.FC = () => {
 
     try {
       const result = await writeContract(config, {
-        abi: stakingABI,
         address: "0x12CBe0b5a52f2DE868d4B4b7012B3C6Af3543764",
+        abi: stakingABI,
         functionName: "boost",
         args: [currentIndex, boostTime],
       });

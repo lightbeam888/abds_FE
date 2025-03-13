@@ -86,7 +86,7 @@ const Stake: React.FC = () => {
         functionName: "stakeTokens",
         args: [parseEther(value), stakeTime, isChecked],
       });
-      console.log(result);
+
       if (result) {
         stakeTokens(address, value, stakeTime);
       } else {
