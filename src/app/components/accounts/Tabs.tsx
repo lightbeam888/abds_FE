@@ -12,10 +12,6 @@ const buttonVariants = {
     scale: 1.005,
     transition: { duration: 0.01, ease: "easeInOut" },
   },
-  // active: {
-  //   scale: 0.99,
-  //   transition: { duration: 0.01, ease: "easeInOut" },
-  // },
 };
 
 const Tabs: React.FC<TabsProps> = ({ active, handleItemClick }) => {

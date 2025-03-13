@@ -6,22 +6,25 @@ import { writeContract } from "@wagmi/core";
 import { config } from "../../utils/config";
 import { stakingABI, ABDSABI } from "../../utils/abi";
 import { motion } from "framer-motion";
-import { etherUnits, parseEther } from "viem";
+import { parseEther } from "viem";
+
 const Stake: React.FC = () => {
   const [value, setValue] = useState<string>("0.00");
   const [activeBoost, setActiveBoost] = useState<number>(0);
   const [isChecked, setIsChecked] = useState<boolean>(false);
-  const { isConnected, address } = useAccount();
+  const { address } = useAccount();
   const [isClient, setIsClient] = useState(false);
   const [tx, setTx] = useState<string>("");
 
   useEffect(() => {
     setIsClient(true);
   }, []);
+
   const buttonVariants = {
     hover: { scale: 1.01, transition: { duration: 0.1, ease: "easeInOut" } },
     tap: { scale: 0.99, transition: { duration: 0.1 } },
   };
+
   const stakeTokens = async (
     address: string | undefined,
     amount: string,
@@ -37,27 +40,37 @@ const Stake: React.FC = () => {
         },
       );
       console.log(response.data);
-    } catch (error: any) {
-      console.error(
-        "Error staking tokens:",
-        error.response?.data || error.message,
-      );
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        console.error(
+          "Error staking tokens:",
+          error.response?.data || error.message,
+        );
+      } else {
+        console.error("Error staking tokens:", error);
+      }
     }
   };
+
   const approve = async (): Promise<void> => {
     try {
       const result = await writeContract(config, {
-        address: "0xb56aaac80c931161548a49181c9e000a19489c44", //  //0x506F6E4847Dc177a62aC9250A9231376569EE728
+        address: "0xb56aaac80c931161548a49181c9e000a19489c44",
         abi: ABDSABI,
         functionName: "approve",
         args: ["0x12CBe0b5a52f2DE868d4B4b7012B3C6Af3543764", parseEther(value)],
       });
       setTx(result);
-    } catch (error: any) {
-      console.error("Approval failed.", error);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error("Approval failed.", error.message);
+      } else {
+        console.error("Approval failed.", error);
+      }
       alert("Approval failed");
     }
   };
+
   const handleStake = async (): Promise<void> => {
     let stakeTime = (activeBoost + 2) * 3;
     if (stakeTime === 6) stakeTime = 182;
@@ -67,10 +80,6 @@ const Stake: React.FC = () => {
     else if (stakeTime === 18) stakeTime = 547;
 
     try {
-      console.log(value);
-      // Approve
-
-      // Stake
       const result = await writeContract(config, {
         abi: stakingABI,
         address: "0x12CBe0b5a52f2DE868d4B4b7012B3C6Af3543764",
@@ -79,12 +88,16 @@ const Stake: React.FC = () => {
       });
       console.log(result);
       if (result) {
-        // stakeTokens(address, value, stakeTime);
+        stakeTokens(address, value, stakeTime);
       } else {
         alert("staking failed");
       }
-    } catch (error: any) {
-      console.error("Approval failed.", error);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error("Approval failed.", error.message);
+      } else {
+        console.error("Approval failed.", error);
+      }
       alert("Approval failed");
     }
   };
@@ -94,9 +107,6 @@ const Stake: React.FC = () => {
     console.log("Checkbox checked:", event.target.checked);
   };
 
-  const handleValueChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setValue(e.target.value);
-  };
   if (!isClient) {
     return null;
   }
@@ -213,7 +223,9 @@ const Stake: React.FC = () => {
         </button>
         <button
           onClick={handleStake}
-          className={`flex h-full w-1/2 items-center justify-center rounded-br-[15px] bg-primary text-[10px] font-semibold text-white md:text-[17px] ${tx?.length > 0 ? "" : "cursor-not-allowed"}`}
+          className={`flex h-full w-1/2 items-center justify-center rounded-br-[15px] bg-primary text-[10px] font-semibold text-white md:text-[17px] ${
+            tx?.length > 0 ? "" : "cursor-not-allowed"
+          }`}
           disabled={tx?.length > 0 ? false : true}
         >
           Stake Now

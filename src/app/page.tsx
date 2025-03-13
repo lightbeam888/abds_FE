@@ -5,15 +5,11 @@ import Accounts from "@/app/components/accounts/Accounts";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "@rainbow-me/rainbowkit/styles.css";
-import {
-  getDefaultConfig,
-  RainbowKitProvider,
-  darkTheme,
-} from "@rainbow-me/rainbowkit";
+import { getDefaultConfig, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { WagmiProvider } from "wagmi";
 import { mainnet, polygon } from "wagmi/chains";
-// import { config } from "./utils/config";
 import { useState } from "react";
+// import { config } from "./utils/config";
 
 const queryClient = new QueryClient();
 const config = getDefaultConfig({
@@ -23,13 +19,14 @@ const config = getDefaultConfig({
   ssr: true,
 });
 export default function Home() {
+  const [range, setRange] = useState(0);
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider>
           <>
-            <Hero />
-            <Statistics />
+            <Hero handleRange={setRange} />
+            <Statistics range={range} />
             {/* left side */}
             <Accounts />
           </>

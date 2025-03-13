@@ -1,10 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Image from "next/image";
 import Navbar from "@/app/components/navigation/Navbar";
-import Settings from "@/app/assets/icons/settings.png";
-import Refresh from "@/app/assets/icons/refresh.png";
 
 const heroVariants = {
   hidden: { opacity: 0, x: -30 },
@@ -15,7 +12,11 @@ const heroVariants = {
   }),
 };
 
-const Hero = () => {
+interface HeroProps {
+  handleRange: (index: number) => void;
+}
+
+const Hero: React.FC<HeroProps> = ({ handleRange }) => {
   return (
     <div
       className="w-full bg-[#1C1D1E] px-[29px] pb-[128px] pt-[27px] md:px-[37px]"
@@ -82,7 +83,7 @@ const Hero = () => {
             </motion.button>
           </div> */}
           <div className="hidden md:flex">
-            <ShowingButtons />
+            <ShowingButtons handleRange={handleRange} />
           </div>
         </motion.div>
       </div>
@@ -90,7 +91,11 @@ const Hero = () => {
   );
 };
 
-const ShowingButtons = () => {
+interface ShowingButtonsProps {
+  handleRange: (index: number) => void;
+}
+
+const ShowingButtons: React.FC<ShowingButtonsProps> = ({ handleRange }) => {
   return (
     <motion.div
       whileHover={{ scale: 1.05 }}
@@ -101,6 +106,7 @@ const ShowingButtons = () => {
         name="filter"
         id="time-select"
         className="appearance-none rounded-lg bg-transparent font-bold text-white outline-none"
+        onChange={(e) => handleRange(e.target.selectedIndex)}
       >
         <option value="year">This Year</option>
         <option value="month">This Month</option>

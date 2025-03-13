@@ -1,10 +1,9 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import ProgressBar from "./ProgressBar";
+import React, { useState } from "react";
 import { useAccount, useContractRead } from "wagmi";
 import { writeContract } from "@wagmi/core";
 import { config } from "../../utils/config";
-import { stakingABI, ABDSABI } from "../../utils/abi";
+import { stakingABI } from "../../utils/abi";
 
 interface StakeData {
   amount: string;
@@ -14,8 +13,7 @@ interface StakeData {
 
 const Boost: React.FC = () => {
   const [activeBoost, setActiveBoost] = useState<number>(0);
-  const [value] = useState<string>("0.00"); // Kept but unused
-  const { isConnected, address } = useAccount();
+  const { address } = useAccount();
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
   const { data: stakeList } = useContractRead({
@@ -42,13 +40,17 @@ const Boost: React.FC = () => {
       });
 
       if (result) {
-        alert("staked successfully");
+        alert("Boosted successfully");
       } else {
-        alert("staking failed");
+        alert("Boosting failed");
       }
-    } catch (error: any) {
-      console.error("Boost failed:", error);
-      alert("staking failed");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error("Boost failed:", error.message);
+      } else {
+        console.error("Boost failed:", error);
+      }
+      alert("Boosting failed");
     }
   };
 
@@ -91,29 +93,31 @@ const Boost: React.FC = () => {
 
         <div className="mt-[14px] w-full px-2 md:mt-8 md:px-6">
           <ul className="flex flex-col space-y-2">
-            {stakeList?.map((staking, index) => (
+            {stakeList?.map((staking: StakeData, index: number) => (
               <li
                 key={index}
                 onClick={() => {
                   setCurrentIndex(index);
                   console.log(index);
                 }}
-                className={`flex cursor-pointer items-center space-x-4 p-3 transition-all duration-300 ${
+                className={`flex cursor-pointer items-center justify-between border-b-2 px-3 py-1.5 transition-all duration-300 md:py-3 md:pl-10 md:pr-8 ${
                   index === currentIndex
-                    ? "bg-[#08D1A4] text-white shadow-lg"
-                    : "border border-[#08D1A4] bg-white text-gray-800 hover:bg-[#08D1A4]/10"
+                    ? "bg-gray-400/85 font-extrabold text-white shadow-md"
+                    : "bg-white text-gray-800 hover:bg-[#08D1A4]/20"
                 }`}
               >
-                <p className="w-1/3 font-medium">
-                  {staking.amount / BigInt(10 ** 18)}
+                <p className="flex-[0.8] text-left text-[12px] font-medium md:text-base">
+                  {Number(staking.amount) / 1e18}
                 </p>
-                <p className="w-1/3 font-medium">
+                <p className="flex-1 text-center text-[12px] font-medium md:text-base">
                   {new Date(
                     Number(staking.startTime) * 1000,
                   ).toLocaleDateString()}
                 </p>
-                <p className="w-1/3 font-medium">{staking.duration}</p>
-                <p className="w-1/3 font-medium">
+                <p className="flex-1 text-center text-[12px] font-medium md:text-base">
+                  {staking.duration}
+                </p>
+                <p className="flex-[0.8] text-center text-[12px] font-medium md:text-base">
                   {new Date(
                     new Date(Number(staking.startTime) * 1000).setDate(
                       new Date(Number(staking.startTime) * 1000).getDate() +
@@ -127,12 +131,9 @@ const Boost: React.FC = () => {
         </div>
       </div>
       <div className="buttons mt-[18px] flex h-[39px] w-full md:mt-7 md:h-[72px]">
-        <button className="flex h-full w-1/2 items-center justify-center rounded-bl-[15px] bg-border text-[10px] font-semibold text-[#544E4E] md:text-[17px]">
-          Approve
-        </button>
         <button
           onClick={handleBoost}
-          className="flex h-full w-1/2 items-center justify-center rounded-br-[15px] bg-primary text-[10px] font-semibold text-white md:text-[17px]"
+          className="flex h-full w-full items-center justify-center rounded-b-[15px] bg-primary text-[10px] font-semibold text-white md:text-[17px]"
         >
           Boost Now
         </button>

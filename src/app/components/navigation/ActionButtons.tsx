@@ -1,15 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useConnect, useAccount, useDisconnect } from "wagmi";
-import { metaMask } from "wagmi/connectors";
-import { injected } from "wagmi/connectors";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 const ActionButtons = () => {
-  const [walletName, setwalletName] = useState("Connect Wallet");
-  const { connect } = useConnect();
-  const { disconnect } = useDisconnect();
-  const { isConnected, address } = useAccount();
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
@@ -22,7 +15,7 @@ const ActionButtons = () => {
   return (
     <div className="items-center justify-center space-x-5 md:flex">
       <ConnectButton.Custom>
-        {({ account, chain, openConnectModal, openAccountModal }) => {
+        {({ account, openConnectModal, openAccountModal }) => {
           return (
             <button
               onClick={account ? openAccountModal : openConnectModal}

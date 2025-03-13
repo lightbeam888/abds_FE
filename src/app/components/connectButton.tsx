@@ -9,7 +9,7 @@ import {
 import { useAccount, useDisconnect } from "wagmi";
 
 export const ConnectBtn = () => {
-  const { isConnecting, address, isConnected, chain } = useAccount();
+  const { isConnecting, isConnected, chain } = useAccount();
 
   const { openConnectModal } = useConnectModal();
   const { openAccountModal } = useAccountModal();
