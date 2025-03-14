@@ -1,8 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { useAccount, useContractRead } from "wagmi";
-import { writeContract } from "@wagmi/core";
-import { config } from "../../utils/config";
+import { useAccount, useReadContract, useWalletClient } from "wagmi";
 import { stakingABI } from "../../utils/abi";
 
 interface StakeData {
@@ -15,8 +13,9 @@ const Boost: React.FC = () => {
   const [activeBoost, setActiveBoost] = useState<number>(0);
   const { address } = useAccount();
   const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const { data: walletClient } = useWalletClient();
 
-  const { data: stakeList } = useContractRead({
+  const { data: stakeList } = useReadContract({
     address: "0x12CBe0b5a52f2DE868d4B4b7012B3C6Af3543764",
     abi: stakingABI,
     functionName: "getUserStakes",
@@ -31,8 +30,10 @@ const Boost: React.FC = () => {
     else if (boostTime === 15) boostTime = 456;
     else if (boostTime === 18) boostTime = 547;
 
+    if (!walletClient) return;
+
     try {
-      const result = await writeContract(config, {
+      const result = await walletClient.writeContract({
         address: "0x12CBe0b5a52f2DE868d4B4b7012B3C6Af3543764",
         abi: stakingABI,
         functionName: "boost",

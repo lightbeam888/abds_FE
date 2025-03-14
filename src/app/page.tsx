@@ -27,7 +27,7 @@ export default function Home() {
           <>
             <Hero handleRange={setRange} />
             <Statistics range={range} />
-            {/* left side */}
+
             <Accounts />
           </>
         </RainbowKitProvider>

@@ -1,9 +1,7 @@
 "use client";
 import React, { useState, ChangeEvent, useEffect } from "react";
 import axios from "axios";
-import { useAccount } from "wagmi";
-import { writeContract } from "@wagmi/core";
-import { config } from "../../utils/config";
+import { useAccount, useWalletClient } from "wagmi";
 import { stakingABI, ABDSABI } from "../../utils/abi";
 import { motion } from "framer-motion";
 import { parseEther } from "viem";
@@ -15,11 +13,11 @@ const Stake: React.FC = () => {
   const { address } = useAccount();
   const [isClient, setIsClient] = useState(false);
   const [tx, setTx] = useState<string>("");
-
+  const { data: walletClient } = useWalletClient();
   useEffect(() => {
     setIsClient(true);
   }, []);
-
+  if (!walletClient) return;
   const buttonVariants = {
     hover: { scale: 1.01, transition: { duration: 0.1, ease: "easeInOut" } },
     tap: { scale: 0.99, transition: { duration: 0.1 } },
@@ -54,7 +52,7 @@ const Stake: React.FC = () => {
 
   const approve = async (): Promise<void> => {
     try {
-      const result = await writeContract(config, {
+      const result = await walletClient.writeContract({
         address: "0xb56aaac80c931161548a49181c9e000a19489c44",
         abi: ABDSABI,
         functionName: "approve",
@@ -80,7 +78,7 @@ const Stake: React.FC = () => {
     else if (stakeTime === 18) stakeTime = 547;
 
     try {
-      const result = await writeContract(config, {
+      const result = await walletClient.writeContract({
         abi: stakingABI,
         address: "0x12CBe0b5a52f2DE868d4B4b7012B3C6Af3543764",
         functionName: "stakeTokens",

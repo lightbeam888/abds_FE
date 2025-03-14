@@ -74,7 +74,7 @@ const Statistics: React.FC<StatisticsProps> = ({ range }) => {
 
   return (
     <motion.div
-      className="w-full px-[29px] text-dark_text md:px-[37px]"
+      className="mx-auto w-full px-[29px] text-dark_text md:px-[37px]"
       initial="hidden"
       animate="visible"
       variants={{
@@ -82,29 +82,7 @@ const Statistics: React.FC<StatisticsProps> = ({ range }) => {
         visible: { opacity: 1, transition: { staggerChildren: 0.2 } },
       }}
     >
-      <motion.div className="cards_container -mt-[52px] grid grid-cols-1 gap-[18px] md:-mt-[74px] md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={{
-            hidden: { opacity: 0, y: -30, scale: 0.2 },
-            visible: {
-              opacity: 1,
-              y: 0,
-              scale: 1,
-              transition: { duration: 0.5, ease: "easeOut" },
-            },
-          }}
-        >
-          <Card
-            icon={Icon1}
-            percentage={16.5}
-            usd="12k"
-            value="0.00%"
-            valueType="APR"
-          />
-        </motion.div>
-
+      <motion.div className="cards_container -mt-[52px] grid grid-cols-1 gap-[18px] md:-mt-[74px] md:grid-cols-2 lg:grid-cols-3">
         <motion.div
           initial="hidden"
           animate="visible"
@@ -171,29 +149,6 @@ const Statistics: React.FC<StatisticsProps> = ({ range }) => {
             valueType="STAKING"
           />
         </motion.div>
-
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={{
-            hidden: { opacity: 0, y: -30, scale: 0.2 },
-            visible: {
-              opacity: 1,
-              y: 0,
-              scale: 1,
-              transition: { duration: 0.5, ease: "easeOut" },
-            },
-          }}
-        >
-          <Card
-            icon={Icon5}
-            percentage={16.5}
-            usd="12k"
-            value="500"
-            valueType="LIMIT"
-          />
-        </motion.div>
-        <div className="hidden">{startDate}</div>
       </motion.div>
     </motion.div>
   );

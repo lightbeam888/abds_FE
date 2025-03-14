@@ -22,7 +22,7 @@ const Card: React.FC<CardProps> = ({
 }) => {
   return (
     <div className="flex w-full items-center justify-center">
-      <div className="stat_card w-full min-w-[208px] max-w-[230px] rounded-xl bg-white px-[10px] py-2 md:min-w-[254px] md:max-w-full md:px-4 md:py-3">
+      <div className="stat_card w-full min-w-[208px] max-w-[230px] rounded-xl bg-white px-[10px] py-2 md:min-w-[254px] md:max-w-[88%] md:px-4 md:py-3">
         <div className="flex w-full items-center justify-between">
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#D5FAEC]">
             <Image src={icon} alt="icon" />
