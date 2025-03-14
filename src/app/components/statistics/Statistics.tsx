@@ -2,11 +2,9 @@
 
 import { motion } from "framer-motion";
 import Card from "@/app/components/statistics/Card";
-import Icon1 from "@/app/assets/icons/icon_card1.png";
 import Icon2 from "@/app/assets/icons/icon_card2.png";
 import Icon3 from "@/app/assets/icons/icon_card3.png";
 import Icon4 from "@/app/assets/icons/icon_card4.png";
-import Icon5 from "@/app/assets/icons/icon_card5.png";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
@@ -144,9 +142,9 @@ const Statistics: React.FC<StatisticsProps> = ({ range }) => {
             icon={Icon4}
             percentage={16.5}
             usd={usdTVL}
-            value={usdTVL}
-            valueSmall="ABDS"
-            valueType="STAKING"
+            value={startDate}
+            valueSmall=""
+            valueType="StartDate"
           />
         </motion.div>
       </motion.div>

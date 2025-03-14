@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useCallback } from "react";
 import { useAccount, useReadContract, useWalletClient } from "wagmi";
-import { readContract, writeContract } from "@wagmi/core";
+import { readContract } from "@wagmi/core";
 import { config } from "../../utils/config";
 import { parseEther } from "viem";
 import { stakingABI } from "../../utils/abi";
@@ -54,7 +54,7 @@ const Claim: React.FC = () => {
     }
   };
 
-  const fetchPendingReward = useCallback(async (): Promise<void> => {
+  const fetchPendingReward = async (): Promise<void> => {
     try {
       const data = (await readContract(config, {
         abi: stakingABI,
@@ -70,7 +70,7 @@ const Claim: React.FC = () => {
         console.error("Error fetching pending reward:", error);
       }
     }
-  }, [address]);
+  };
 
   useEffect(() => {
     if (address) {
