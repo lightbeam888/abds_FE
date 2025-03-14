@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, useCallback } from "react";
-import { useAccount, useReadContract, useWalletClient } from "wagmi";
+import { useAccount, useContractRead, useWalletClient } from "wagmi";
 import { readContract } from "@wagmi/core";
 import { config } from "../../utils/config";
 import { parseEther } from "viem";
@@ -20,18 +20,21 @@ const Claim: React.FC = () => {
   const [currentReward, setCurrentReward] = useState<string>("0");
   const [isClient, setIsClient] = useState(false);
   const { data: walletClient } = useWalletClient();
+
   useEffect(() => {
     setIsClient(true);
   }, []);
 
-  const { data: stakeList } = useReadContract({
+  const { data: stakeList } = useContractRead({
     address: "0x12CBe0b5a52f2DE868d4B4b7012B3C6Af3543764",
     abi: stakingABI,
     functionName: "getUserStakes",
     args: [address],
   }) as { data: StakeData[] | undefined };
-  if (!walletClient) return;
+
   const handleClaim = async (): Promise<void> => {
+    if (!walletClient) return;
+
     try {
       const result = await walletClient.writeContract({
         abi: stakingABI,
@@ -54,7 +57,7 @@ const Claim: React.FC = () => {
     }
   };
 
-  const fetchPendingReward = async (): Promise<void> => {
+  const fetchPendingReward = useCallback(async (): Promise<void> => {
     try {
       const data = (await readContract(config, {
         abi: stakingABI,
@@ -70,7 +73,7 @@ const Claim: React.FC = () => {
         console.error("Error fetching pending reward:", error);
       }
     }
-  };
+  }, [address]);
 
   useEffect(() => {
     if (address) {
